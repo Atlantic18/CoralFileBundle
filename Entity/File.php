@@ -45,7 +45,7 @@ class File
     private $created_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Coral\CoreBundle\Entity\Account", inversedBy="files")
+     * @ORM\ManyToOne(targetEntity="Coral\CoreBundle\Entity\Account")
      * @ORM\JoinColumn(name="account_id", referencedColumnName="id", nullable=false)
      */
     private $account;
