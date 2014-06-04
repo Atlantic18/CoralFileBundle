@@ -1,0 +1,8 @@
+[04-Jun-2014 22:10:05 Europe/Prague] PHP Fatal error:  Class 'Coral\FileBundle\Controller\JsonParser' not found in /Users/frtroster/Projects/CoralBundles/CoralFileBundle/Controller/DefaultController.php on line 33
+[04-Jun-2014 22:24:39 Europe/Prague] PHP Fatal error:  Class 'Coral\ContentBundle\Tests\DataFixtures\ORM\ContentSettingsData' not found in /Users/frtroster/Projects/CoralBundles/CoralFileBundle/vendor/coral/core-bundle/Coral/CoreBundle/Test/WebTestCase.php on line 311
+[04-Jun-2014 22:54:13 Europe/Prague] PHP Parse error:  parse error in /Users/frtroster/Projects/CoralBundles/CoralFileBundle/Controller/DefaultController.php on line 68
+[04-Jun-2014 22:54:29 Europe/Prague] PHP Parse error:  parse error in /Users/frtroster/Projects/CoralBundles/CoralFileBundle/Controller/DefaultController.php on line 68
+[04-Jun-2014 22:57:11 Europe/Prague] PHP Fatal error:  Cannot access private property appTestDebugProjectContainer::$parameters in /Users/frtroster/Projects/CoralBundles/CoralFileBundle/Controller/DefaultController.php on line 38
+[04-Jun-2014 22:57:35 Europe/Prague] PHP Fatal error:  Call to undefined method appTestDebugProjectContainer::getParameters() in /Users/frtroster/Projects/CoralBundles/CoralFileBundle/Controller/DefaultController.php on line 38
+[04-Jun-2014 23:21:43 Europe/Prague] PHP Fatal error:  Call to undefined method Coral\FileBundle\Controller\DefaultController::getContainer() in /Users/frtroster/Projects/CoralBundles/CoralFileBundle/Controller/DefaultController.php on line 38
+[04-Jun-2014 23:22:44 Europe/Prague] PHP Fatal error:  Call to undefined method appTestDebugProjectContainer::getArguments() in /Users/frtroster/Projects/CoralBundles/CoralFileBundle/Controller/DefaultController.php on line 38

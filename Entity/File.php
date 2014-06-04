@@ -27,7 +27,7 @@ class File
      */
     private $mime_type;
 
-    /** 
+    /**
      * @ORM\Column(type="string", length=40, nullable=false)
      */
     private $hash;
@@ -61,22 +61,6 @@ class File
      */
     private $fileAttributes;
 
-    /**
-     *
-     */
-    private $FileAttributes;
-
-    /**
-     *
-     *
-     */
-    private $FileAlias;
-
-    /**
-     *
-     *
-     */
-    private $Account;
     /**
      * Constructor
      */
@@ -229,14 +213,14 @@ class File
     public function setUpdatedAt($updatedAt)
     {
         $this->updated_at = $updatedAt;
-    
+
         return $this;
     }
 
     /**
      * Get updated_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
@@ -252,14 +236,14 @@ class File
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
-    
+
         return $this;
     }
 
     /**
      * Get created_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -275,14 +259,14 @@ class File
     public function setHash($hash)
     {
         $this->hash = $hash;
-    
+
         return $this;
     }
 
     /**
      * Get hash
      *
-     * @return string 
+     * @return string
      */
     public function getHash()
     {

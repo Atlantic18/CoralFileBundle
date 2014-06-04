@@ -2,10 +2,10 @@
 namespace Coral\FileBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
 
-/** 
+/**
  * @ORM\Entity
  * @ORM\Table(
- *     name="coral_file_attribute", 
+ *     name="coral_file_attribute",
  *     indexes={
  *         @ORM\Index(name="FileAttributeNameIndex", columns={"name"}),
  *         @ORM\Index(name="FileAttributeNameValueIndex", columns={"name","value"})
@@ -14,39 +14,33 @@ use Doctrine\ORM\Mapping AS ORM;
  */
 class FileAttribute
 {
-    /** 
+    /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
-    /** 
+    /**
      * @ORM\Column(type="string", length=32, nullable=false)
      */
     private $name;
 
-    /** 
+    /**
      * @ORM\Column(type="string", length=128, nullable=false)
      */
     private $value;
 
-    /** 
+    /**
      * @ORM\ManyToOne(targetEntity="Coral\FileBundle\Entity\File", inversedBy="fileAttributes")
      * @ORM\JoinColumn(name="file_id", referencedColumnName="id", nullable=false)
      */
     private $file;
 
-    /** 
-     * 
-     * 
-     */
-    private $File;
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -62,14 +56,14 @@ class FileAttribute
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -85,14 +79,14 @@ class FileAttribute
     public function setValue($value)
     {
         $this->value = $value;
-    
+
         return $this;
     }
 
     /**
      * Get value
      *
-     * @return string 
+     * @return string
      */
     public function getValue()
     {
@@ -108,14 +102,14 @@ class FileAttribute
     public function setFile(\Coral\FileBundle\Entity\File $file)
     {
         $this->file = $file;
-    
+
         return $this;
     }
 
     /**
      * Get file
      *
-     * @return \Coral\FileBundle\Entity\File 
+     * @return \Coral\FileBundle\Entity\File
      */
     public function getFile()
     {
