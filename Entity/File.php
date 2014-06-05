@@ -185,6 +185,25 @@ class File
     }
 
     /**
+     * Create new fileAttributes
+     *
+     * @param string $key
+     * @param string $value
+     * @return \Coral\FileBundle\Entity\FileAttribute
+     */
+    public function createFileAttribute($key, $value)
+    {
+        $fileAttribute = new \Coral\FileBundle\Entity\FileAttribute;
+        $fileAttribute->setFile($this);
+        $fileAttribute->setName($key);
+        $fileAttribute->setValue($value);
+
+        $this->addFileAttribute($fileAttribute);
+
+        return $fileAttribute;
+    }
+
+    /**
      * Remove fileAttributes
      *
      * @param \Coral\FileBundle\Entity\FileAttribute $fileAttributes

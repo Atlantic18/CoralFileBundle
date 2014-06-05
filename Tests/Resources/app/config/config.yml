@@ -13,6 +13,9 @@ framework:
     default_locale: "en"
 
 services:
+    coral.storage:
+        class: Coral\FileBundle\Storage\FileStorageService
+        arguments: ["@service_container", "http://static.example.com/", "http://cdn.example.com/"]
     kernel.listener.core_bundle_exception_listener:
         class: Coral\CoreBundle\Service\JsonExceptionService
         tags:

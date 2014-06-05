@@ -16,8 +16,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  */
 class DefaultController extends JsonController
 {
-    private function generateFilename($slug, $mimeType)
+    private function generateFilename($filename, $mimeType)
     {
+        $slug = $filename;
+        $slug = str_replace(' ', '-', $slug);
+        if(false !== ($dotPos = strpos($slug, '.')))
+        {
+            $slug = substr($slug, 0, $dotPos);
+        }
+        $slug  = filter_var($slug, FILTER_SANITIZE_URL);
         $maxId = $this->getDoctrine()->getManager()->createQuery(
                 'SELECT MAX(f.id) FROM CoralFileBundle:File f'
             )
@@ -33,29 +40,29 @@ class DefaultController extends JsonController
     public function addAction()
     {
         $request = new JsonParser($this->get("request")->getContent(), true);
+        $storage = $this->get('coral.storage');
+        $em      = $this->getDoctrine()->getManager();
 
-        $content = base64_decode($request->getMandatoryParam('content'));
-var_dump($this->container->getParameter('monolog'));die('fok');
+        $content      = base64_decode($request->getMandatoryParam('content'));
+        $realFilename = $this->generateFilename($request->getMandatoryParam('filename'), $request->getMandatoryParam('mime_type'));
+
         $file = new File;
         $file->setFilename($request->getMandatoryParam('filename'));
         $file->setMimeType($request->getMandatoryParam('mime_type'));
         $file->setAccount($this->getAccount());
-        $file->setHash(sha1($content));
 
-        $em = $this->getDoctrine()->getManager();
+        $storage->save($realFilename, $content);
+        $file->setHash($storage->sha1($realFilename));
+
         $em->persist($file);
+        $em->persist($file->createFileAttribute('real_filename', $realFilename));
 
         $params = $request->getParams();
         unset($params['filename'], $params['content'], $params['mime_type']);
 
         foreach ($params as $key => $value) {
             if($value) {
-                $attribute = new \Coral\FileBundle\Entity\FileAttribute;
-                $attribute->setFile($file);
-                $attribute->setName($key);
-                $attribute->setValue($value);
-
-                $em->persist($attribute);
+                $em->persist($file->createFileAttribute($key, $value));
             }
         }
 
@@ -64,7 +71,100 @@ var_dump($this->container->getParameter('monolog'));die('fok');
         return new JsonResponse(array(
             'status'  => 'ok',
             'id'      => $file->getId(),
-            'uri'     => 'uri'
+            'uri'     => $storage->getOriginBaseUri() . $realFilename
         ), 201);
+    }
+
+    /**
+     * @Route("/detail/{id}")
+     * @Method("GET")
+     */
+    public function detailAction($id)
+    {
+        $storage   = $this->get('coral.storage');
+        $rawResult = $this->getDoctrine()->getManager()->createQuery(
+                'SELECT f, fa
+                FROM CoralFileBundle:File f
+                LEFT JOIN f.fileAttributes fa
+                INNER JOIN f.account a WITH (a.id = :account_id)
+                WHERE f.id = :id'
+            )
+            ->setParameter('account_id', $this->getAccount()->getId())
+            ->setParameter('id', $id)
+            ->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+
+        $this->throwNotFoundExceptionIf(!count($rawResult), "File [$id] wasn't found.");
+
+        $result = array();
+        foreach ($rawResult as $file)
+        {
+            $newResult = array(
+                'filename'  => $file['filename'],
+                'mime_type' => $file['mime_type'],
+            );
+            if(array_key_exists('fileAttributes', $file))
+            {
+                foreach ($file['fileAttributes'] as $fileAttribute)
+                {
+                    if($fileAttribute['name'] == 'real_filename')
+                    {
+                        $newResult['uri'] = $storage->getOriginBaseUri() . $fileAttribute['value'];
+                    }
+                    else
+                    {
+                        $newResult[$fileAttribute['name']] = $fileAttribute['value'];
+                    }
+                }
+            }
+
+            $result[] = $newResult;
+        }
+
+        return $this->createListJsonResponse($result);
+    }
+
+    /**
+     * @Route("/list")
+     * @Method("GET")
+     */
+    public function listAction()
+    {
+        $storage   = $this->get('coral.storage');
+        $rawResult = $this->getDoctrine()->getManager()->createQuery(
+                'SELECT f, fa
+                FROM CoralFileBundle:File f
+                LEFT JOIN f.fileAttributes fa
+                INNER JOIN f.account a WITH (a.id = :account_id)
+                ORDER BY f.id ASC'
+            )
+            ->setParameter('account_id', $this->getAccount()->getId())
+            ->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+
+        $result = array();
+        foreach ($rawResult as $file)
+        {
+            $newResult = array(
+                'filename'  => $file['filename'],
+                'mime_type' => $file['mime_type'],
+            );
+            if(array_key_exists('fileAttributes', $file))
+            {
+                foreach ($file['fileAttributes'] as $fileAttribute)
+                {
+                    if($fileAttribute['name'] == 'real_filename')
+                    {
+                        $newResult['uri'] = $storage->getOriginBaseUri() . $fileAttribute['value'];
+                    }
+                    else
+                    {
+                        $newResult[$fileAttribute['name']] = $fileAttribute['value'];
+                    }
+                }
+            }
+
+            $result[] = $newResult;
+        }
+
+        return $this->createListJsonResponse($result);
     }
 }
