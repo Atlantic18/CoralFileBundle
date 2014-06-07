@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping AS ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(
- *     name="coral_file_attribute",
+ *     name="coral_file_attribute", 
  *     indexes={
  *         @ORM\Index(name="FileAttributeNameIndex", columns={"name"}),
  *         @ORM\Index(name="FileAttributeNameValueIndex", columns={"name","value"})

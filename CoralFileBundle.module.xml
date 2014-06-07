@@ -6,7 +6,6 @@
       <field name="filename" type="string" size="255" required="true" uuid="bed0b024-2012-4928-b2f0-31940f9cba16"/>
       <field name="mime_type" type="string" size="32" required="true" uuid="6e75f661-362e-4af8-8c10-d2a26a7016dd"/>
       <field name="hash" description="file content hash sha1" type="string" size="40" required="true" uuid="7ffa778f-120a-4870-9513-c80a4d68bee5"/>
-      <field name="file_alias_id" type="integer" uuid="868b9924-ccd6-4e02-8186-cd1a5c93cf49"/>
       <field name="account_id" type="integer" required="true" uuid="75846dc7-3ebc-4c52-a427-0c4518046467"/>
       <field name="created_at" type="datetime" uuid="57e4c1fa-d728-4e35-ab9f-863a3d30bf7a"/>
       <field name="updated_at" type="datetime" uuid="2e00d359-f779-4256-aeaf-ebbafe3f6d4e"/>
@@ -17,9 +16,6 @@
         <attribute name="table">coral_file</attribute>
       </orm-attributes>
     </entity>
-    <association from="File" to="Thumbnail" owner-alias="files" inverse-alias="fileAlias" uuid="67c928e9-b001-4fa1-a237-efae08ed6e65">
-      <association-field from="file_alias_id" to="id"/>
-    </association>
     <association from="File" to="Account" caption="Files for account" inverse-alias="account" uuid="30cf615c-e012-4f6f-b808-28f32077658c">
       <association-field from="account_id" to="id"/>
     </association>
@@ -28,11 +24,19 @@
       <field name="filename" type="string" size="255" uuid="826c2b66-623c-42d2-952d-01b86572a706"/>
       <field name="mime_type" type="string" size="32" required="true" uuid="2ea10e3a-856b-44a4-884c-2a4d52471043"/>
       <field name="thumb_size" type="string" size="32" required="true" uuid="881214a6-eee2-4a87-91f6-6812a0b8512b"/>
+      <field name="is_origin" type="boolean" uuid="7b145fc0-c0f6-4a49-998c-a74cb45c2851"/>
+      <field name="file_id" type="integer" uuid="42501846-aee5-4ff4-8751-68674d0bcace"/>
       <orm-attributes>
         <attribute name="export-file-name">Thumbnail.php</attribute>
         <attribute name="table">coral_thumbnail</attribute>
       </orm-attributes>
     </entity>
+    <association from="Thumbnail" to="File" owner-alias="thumbnails" inverse-alias="file" uuid="0c3a3e27-c0df-41c2-986c-db6ab2c0063f">
+      <association-field from="file_id" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
     <entity name="FileAttribute" uuid="798ac5e4-338a-4b4e-9cf5-14d5b82bc772">
       <field name="id" type="integer" required="true" primary="true" auto-increment="true" uuid="be99a570-4d5d-4e9a-bc36-075e155dc154"/>
       <field name="name" type="string" size="32" required="true" uuid="dd24bc95-a169-40f2-b620-5d453b54f98c"/>

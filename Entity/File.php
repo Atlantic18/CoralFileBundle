@@ -39,6 +39,11 @@ class File
     private $updated_at;
 
     /**
+     * @ORM\OneToMany(targetEntity="Coral\FileBundle\Entity\Thumbnail", mappedBy="file")
+     */
+    private $thumbnails;
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -51,12 +56,6 @@ class File
     private $account;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Coral\FileBundle\Entity\Thumbnail", inversedBy="files")
-     * @ORM\JoinColumn(name="file_alias_id", referencedColumnName="id")
-     */
-    private $fileAlias;
-
-    /**
      * @ORM\OneToMany(targetEntity="Coral\FileBundle\Entity\FileAttribute", mappedBy="file")
      */
     private $fileAttributes;
@@ -67,6 +66,7 @@ class File
     public function __construct()
     {
         $this->fileAttributes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->thumbnails = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -146,29 +146,6 @@ class File
     public function getAccount()
     {
         return $this->account;
-    }
-
-    /**
-     * Set fileAlias
-     *
-     * @param \Coral\FileBundle\Entity\Thumbnail $fileAlias
-     * @return File
-     */
-    public function setFileAlias(\Coral\FileBundle\Entity\Thumbnail $fileAlias)
-    {
-        $this->fileAlias = $fileAlias;
-
-        return $this;
-    }
-
-    /**
-     * Get fileAlias
-     *
-     * @return \Coral\FileBundle\Entity\Thumbnail
-     */
-    public function getFileAlias()
-    {
-        return $this->fileAlias;
     }
 
     /**

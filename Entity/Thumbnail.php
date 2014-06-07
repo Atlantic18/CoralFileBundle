@@ -2,55 +2,49 @@
 namespace Coral\FileBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
 
-/** 
+/**
  * @ORM\Entity
  * @ORM\Table(name="coral_thumbnail")
  */
 class Thumbnail
 {
-    /** 
+    /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
-    /** 
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $filename;
 
-    /** 
+    /**
      * @ORM\Column(type="string", length=32, nullable=false)
      */
     private $mime_type;
 
-    /** 
+    /**
      * @ORM\Column(type="string", length=32, nullable=false)
      */
     private $thumb_size;
 
-    /** 
-     * @ORM\OneToMany(targetEntity="Coral\FileBundle\Entity\File", mappedBy="fileAlias")
-     */
-    private $files;
-
-    /** 
-     * 
-     */
-    private $Files;
     /**
-     * Constructor
+     * @ORM\ManyToOne(targetEntity="Coral\FileBundle\Entity\File", inversedBy="thumbnails")
+     * @ORM\JoinColumn(name="file_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    public function __construct()
-    {
-        $this->files = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
+    private $file;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_origin;
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -66,14 +60,14 @@ class Thumbnail
     public function setFilename($filename)
     {
         $this->filename = $filename;
-    
+
         return $this;
     }
 
     /**
      * Get filename
      *
-     * @return string 
+     * @return string
      */
     public function getFilename()
     {
@@ -89,14 +83,14 @@ class Thumbnail
     public function setMimeType($mimeType)
     {
         $this->mime_type = $mimeType;
-    
+
         return $this;
     }
 
     /**
      * Get mime_type
      *
-     * @return string 
+     * @return string
      */
     public function getMimeType()
     {
@@ -112,50 +106,17 @@ class Thumbnail
     public function setThumbSize($thumbSize)
     {
         $this->thumb_size = $thumbSize;
-    
+
         return $this;
     }
 
     /**
      * Get thumb_size
      *
-     * @return string 
+     * @return string
      */
     public function getThumbSize()
     {
         return $this->thumb_size;
-    }
-
-    /**
-     * Add files
-     *
-     * @param \Coral\FileBundle\Entity\File $files
-     * @return Thumbnail
-     */
-    public function addFile(\Coral\FileBundle\Entity\File $files)
-    {
-        $this->files[] = $files;
-    
-        return $this;
-    }
-
-    /**
-     * Remove files
-     *
-     * @param \Coral\FileBundle\Entity\File $files
-     */
-    public function removeFile(\Coral\FileBundle\Entity\File $files)
-    {
-        $this->files->removeElement($files);
-    }
-
-    /**
-     * Get files
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getFiles()
-    {
-        return $this->files;
     }
 }
