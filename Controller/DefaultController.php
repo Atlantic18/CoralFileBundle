@@ -34,6 +34,21 @@ class DefaultController extends JsonController
     }
 
     /**
+     * Find duplicate content by hash
+     *
+     * @param  string $hash SHA1 of the content
+     * @return boolean|File
+     */
+    private function getContentDuplicateId($hash)
+    {
+        $file = $this->getDoctrine()
+            ->getRepository('CoralFileBundle:File')
+            ->findOneByHash($hash);
+
+        return ($file && $file instanceof File) ? $file : false;
+    }
+
+    /**
      * @Route("/add")
      * @Method("POST")
      */
