@@ -268,4 +268,37 @@ class File
     {
         return $this->hash;
     }
+
+    /**
+     * Add thumbnails
+     *
+     * @param \Coral\FileBundle\Entity\Thumbnail $thumbnails
+     * @return File
+     */
+    public function addThumbnail(\Coral\FileBundle\Entity\Thumbnail $thumbnails)
+    {
+        $this->thumbnails[] = $thumbnails;
+
+        return $this;
+    }
+
+    /**
+     * Remove thumbnails
+     *
+     * @param \Coral\FileBundle\Entity\Thumbnail $thumbnails
+     */
+    public function removeThumbnail(\Coral\FileBundle\Entity\Thumbnail $thumbnails)
+    {
+        $this->thumbnails->removeElement($thumbnails);
+    }
+
+    /**
+     * Get thumbnails
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getThumbnails()
+    {
+        return $this->thumbnails;
+    }
 }

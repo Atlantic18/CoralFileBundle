@@ -119,4 +119,50 @@ class Thumbnail
     {
         return $this->thumb_size;
     }
+
+    /**
+     * Set is_origin
+     *
+     * @param boolean $isOrigin
+     * @return Thumbnail
+     */
+    public function setIsOrigin($isOrigin)
+    {
+        $this->is_origin = $isOrigin;
+
+        return $this;
+    }
+
+    /**
+     * Get is_origin
+     *
+     * @return boolean 
+     */
+    public function getIsOrigin()
+    {
+        return $this->is_origin;
+    }
+
+    /**
+     * Set file
+     *
+     * @param \Coral\FileBundle\Entity\File $file
+     * @return Thumbnail
+     */
+    public function setFile(\Coral\FileBundle\Entity\File $file = null)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Get file
+     *
+     * @return \Coral\FileBundle\Entity\File 
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
 }
