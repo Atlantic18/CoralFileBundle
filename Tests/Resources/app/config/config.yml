@@ -48,3 +48,19 @@ doctrine:
     orm:
         auto_generate_proxy_classes: true
         auto_mapping: true
+
+liip_imagine:
+    driver:               gd
+    filter_sets:
+        small:
+            quality: 85
+            filters:
+                thumbnail: { size: [240, 120], mode: outbound }
+        medium:
+            quality: 85
+            filters:
+                thumbnail: { size: [480, 360], mode: outbound }
+        large:
+            quality: 85
+            filters:
+                thumbnail: { size: [700, 500], mode: outbound }

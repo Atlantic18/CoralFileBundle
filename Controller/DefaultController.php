@@ -59,15 +59,24 @@ class DefaultController extends JsonController
         $em      = $this->getDoctrine()->getManager();
 
         $content      = base64_decode($request->getMandatoryParam('content'));
+        $hash         = sha1($content);
         $realFilename = $this->generateFilename($request->getMandatoryParam('filename'), $request->getMandatoryParam('mime_type'));
+
+        if(($file = $this->getContentDuplicateId($hash)))
+        {
+            return new JsonResponse(array(
+                'status'  => 'ok',
+                'id'      => $file->getId(),
+                'uri'     => $storage->getOriginBaseUri() . $realFilename
+            ), 200);
+        }
 
         $file = new File;
         $file->setFilename($request->getMandatoryParam('filename'));
         $file->setMimeType($request->getMandatoryParam('mime_type'));
         $file->setAccount($this->getAccount());
-
         $storage->save($realFilename, $content);
-        $file->setHash($storage->sha1($realFilename));
+        $file->setHash($hash);
 
         $em->persist($file);
         $em->persist($file->createFileAttribute('real_filename', $realFilename));

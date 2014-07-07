@@ -6,3 +6,5 @@ vendor
 phpunit.xml
 nbproject
 catalog.xml
+
+*.sublime-project
